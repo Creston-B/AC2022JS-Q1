@@ -1,48 +1,56 @@
 import fs from "fs";
 
+class Elf {
+  constructor(index, items) {
+    this.index = index;
+    this.items = items;
+  }
+
+  get totalCals() {
+    let cals = 0;
+    this.items.forEach((i) => {
+      cals += 1 * i;
+    });
+    return cals;
+  }
+}
+
 //garbage implementation
 
 const chunkdelim = "\r\n\r\n";
 const delim = "\r\n";
 let data = fs.readFileSync("./input.txt", "utf-8");
 
-let elves = [[]];
+let elves = [];
 let answer;
 
 elves = getElves(data);
-answer = findHighestCalCount(elves);
+sortElves(elves);
 
-console.log(answer);
-
-
+let topThree = takeThree(elves);
+console.log(topThree)
+console.log(
+    'sum of top three: ' +
+    +(topThree[0].totalCals + topThree[1].totalCals + topThree[2].totalCals)
+);
 
 function getElves(data) {
+  let _elves = [];
   let chunks = data.split(chunkdelim);
 
   for (let i = 0; i < chunks.length; i++) {
-    elves[i] = chunks[i].split(delim);
+    _elves[i] = new Elf(i, chunks[i].split(delim));
   }
 
-  for (let i = 0; i < elves.length; i++) {
-    elves[i] = chunks[i].split(delim);
-  }
-  return(elves)
+  return _elves;
 }
 
-function findHighestCalCount(elves) {
-  let index = 0;
-  let cals = 0;
-  
-  for (let i = 0; i < elves.length; i++) {
-    let elfcal = 0;
-    elves[i].forEach(item => {
-      elfcal += 1* item;
-    });
-    if (elfcal > cals) {
-     cals = elfcal;
-    index = i;
-    }
-  }
-  
-  return([index, cals]);
+function sortElves(_elves) {
+  return _elves.sort((a, b) => {
+    return b.totalCals - a.totalCals;
+  });
+}
+
+function takeThree(_arr) {
+  return [_arr[0], _arr[1], _arr[2]];
 }
