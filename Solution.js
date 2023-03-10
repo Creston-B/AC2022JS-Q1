@@ -22,10 +22,6 @@ function getElves(data) {
   for (let i = 0; i < chunks.length; i++) {
     elves[i] = chunks[i].split(delim);
   }
-
-  for (let i = 0; i < elves.length; i++) {
-    elves[i] = chunks[i].split(delim);
-  }
   return(elves)
 }
 
